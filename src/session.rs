@@ -1,6 +1,6 @@
 use anyhow::{bail, Result as AnyResult};
 use tokio::{
-    io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncWrite, AsyncWriteExt, BufReader},
     net::TcpStream,
 };
 use tokio_native_tls::{
@@ -9,22 +9,23 @@ use tokio_native_tls::{
 
 use crate::types::State;
 
-pub struct Session {
+pub struct Session<S> {
     cmd_id: u64,
     state: State,
-    stream: BufReader<AsyncTlsStream<TcpStream>>,
+    stream: S,
 }
 
-pub struct SessionBuilder {
-    _tls: bool,
-}
+pub struct SessionBuilder;
 
 impl SessionBuilder {
     pub fn new() -> Self {
-        Self { _tls: true }
+        Self {}
     }
 
-    pub async fn connect(self, addr: (&str, u16)) -> AnyResult<(Session, String)> {
+    pub async fn connect(
+        self,
+        addr: (&str, u16),
+    ) -> AnyResult<(Session<BufReader<AsyncTlsStream<TcpStream>>>, String)> {
         let connector: AsyncTlsConnector = TlsConnector::builder().build()?.into();
         let stream = TcpStream::connect(addr).await?;
         let mut stream = BufReader::new(connector.connect(addr.0, stream).await?);
@@ -49,7 +50,7 @@ impl Default for SessionBuilder {
     }
 }
 
-impl Session {
+impl<S: AsyncBufRead + AsyncWrite + Unpin> Session<S> {
     pub fn builder() -> SessionBuilder {
         SessionBuilder::new()
     }
