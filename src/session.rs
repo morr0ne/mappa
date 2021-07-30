@@ -92,9 +92,15 @@ impl Session {
         }
     }
 
-    pub async fn select(&mut self, name: &str) -> AnyResult<String> {
-        let buf = self.send_command(format!("SELECT {}", name)).await?;
+    pub async fn logout(&mut self) -> AnyResult<String> {
+        self.send_command("LOGOUT".as_bytes()).await
+    }
 
-        Ok(buf)
+    pub async fn noop(&mut self) -> AnyResult<String> {
+        self.send_command("NOOP".as_bytes()).await
+    }
+
+    pub async fn select(&mut self, name: &str) -> AnyResult<String> {
+        self.send_command(format!("SELECT {}", name)).await
     }
 }

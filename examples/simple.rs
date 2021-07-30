@@ -1,7 +1,7 @@
 use anyhow::Result as AnyResult;
 use clap::{App, Arg};
 use log::info;
-use mappa::{types::Commands, SessionBuilder};
+use mappa::SessionBuilder;
 
 #[tokio::main]
 async fn main() -> AnyResult<()> {
@@ -26,13 +26,13 @@ async fn main() -> AnyResult<()> {
     let res = session.login(email, password).await?;
     print!("{}", res);
 
-    let res = session.send_command(Commands::NOOP).await?;
+    let res = session.noop().await?;
     print!("{}", res);
 
     // let res = session.select("inbox").await?;
     // print!("{}", res);
 
-    let res = session.send_command(Commands::LOGOUT).await?;
+    let res = session.logout().await?;
     print!("{}", res);
 
     // let res = session.send_command(Commands::select("INBOX")).await?;
