@@ -1,0 +1,28 @@
+cargo-features = ["strip"]
+
+[package]
+name = "mappa"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+anyhow = "1.0.42"
+bytes = "1.0.1"
+log = "0.4.14"
+tokio = { version = "1.9.0", features = ["full"] }
+tokio-native-tls = "0.3.0"
+
+[dependencies.native-tls]
+features = ["vendored"]
+version = "0.2.7"
+
+[dev-dependencies]
+env_logger = "0.9.0"
+clap = { version = "3.0.0-beta.2", features = ["wrap_help"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+# opt-level = "z"
+# panic = "abort"
