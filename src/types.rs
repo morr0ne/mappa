@@ -33,13 +33,3 @@ impl FromStr for StatusResponse {
         }
     }
 }
-
-pub struct Commands;
-
-impl Commands {
-    pub const CAPABILITY: &'static [u8] = "CAPABILITY".as_bytes();
-    pub const LOGOUT: &'static [u8] = "LOGOUT".as_bytes();
-    pub const NOOP: &'static [u8] = "NOOP".as_bytes();
-    pub const STARTTLS: &'static [u8] = "STARTTLS".as_bytes();
-    // TODO: AUTHENTICATE
-}
