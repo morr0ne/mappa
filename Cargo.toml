@@ -9,7 +9,7 @@ edition = "2018"
 anyhow = "1.0.42"
 bytes = "1.0.1"
 log = "0.4.14"
-tokio = { version = "1.9.0", features = ["full"] }
+tokio = { version = "1.18.5", features = ["full"] }
 tokio-native-tls = "0.3.0"
 
 [dependencies.native-tls]
